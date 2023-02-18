@@ -1,0 +1,4 @@
+---
+    - name: To cancel the Process for Database Backup
+      shell: cat {{ item }}
+      loop: "{{ util }}"

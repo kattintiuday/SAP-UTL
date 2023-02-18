@@ -1,0 +1,6 @@
+---
+    - name: "Playing with Ansible and Git"
+      hosts: appserver01,appserver02
+      tasks:
+        - include: tasks/getutllist
+        - include: tasks/readutl.yml

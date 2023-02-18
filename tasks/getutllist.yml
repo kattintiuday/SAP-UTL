@@ -1,0 +1,10 @@
+---
+    - name: "To get the Database Backup Process"
+      shell: ls /tmp/*.utl  
+      register: utlfiles
+    - set_fact: 
+        util: "{{utlfiles.stdout_lines}}"
+    - debug: 
+        msg: "{{utlfiles.stdout_lines}}"
+    - debug:
+        var: utlfiles.stdout
