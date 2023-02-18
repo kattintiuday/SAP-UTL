@@ -2,6 +2,6 @@
     - name: To remove file
       shell: rm -rf /tmp/sample*
     - name: To cancel the Process for Database Backup
-      shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $1,$2 }' | grep -v '#'  >> /tmp/sample.csv
+      shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $1,$2 }' | grep -v '#'  >> {{ item }}_temp.csv
       register: output  
       loop: "{{ util }}"
