@@ -1,0 +1,16 @@
+---
+    - name: "To get the Database Backup Process"
+      dsmadmc:
+        command: " select PROCESS_NUM from processes where (PROCESS='Space Reclamation' or PROCESS='Backup Storage Pool' or PROCESS='Move Data') "
+        se: "{{ tsm_server_node }}"
+        id: "{{ tsm_app_user }}"
+        pa: "{{ tsm_app_password }}"
+        dataonly: true
+        comma: true
+      register: process1
+    - set_fact: 
+        proc_num: "{{process1.stdout_lines}}"
+    - debug: 
+        msg: "{{process1.stdout_lines}}"
+    - debug:
+        var: process1.stdout
