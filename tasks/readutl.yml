@@ -3,7 +3,18 @@
     file:
       path: /tmp/sample*
       state: absent        
-  - name: To cancel the Process for Database Backup
-    shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $1,$2 }' | grep -v '#'  >> {{ item }}_temp.csv
-    register: output  
-    loop: "{{ util }}"
+  
+  #- name: To cancel the Process for Database Backup
+  # shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $2 }' | grep -v '#'  >> {{ item }}_temp.csv
+  #  register: output  
+  #  loop: "{{ util }}"
+
+  - name: Extract data from file
+    lineinfile:
+      path: "{{ item }}_temp.csv"
+      line: "{{ item_content.stdout_lines | regex_search('\\b(ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS)\\s+([^#]+)') }}"
+      state: present
+    vars:
+      item_content: "{{ lookup('file', item) }}"
+    with_items: "{{ util }}"
+  
