@@ -5,7 +5,7 @@
 
     - name: " To remove old file"
       shell: rm -rf all.csv
-      
+
     - name: Get the last word of processes named ora_pmon
       shell: ps -ef | grep ora_pmon | awk '{ print $8 }' | grep -v grep | awk -F "_" '{print $NF}' | grep -v /bin/sh
       register: last_word
@@ -43,7 +43,7 @@
       loop: "{{ util }}"      
 
     - name: "To append the filtered data to final file with DB names"
-      shell: awk -F ',' '{ for (i=1; i<=NF; i++) { a[i,NR]=$i } } END { for (i=1; i<=NF; i++) { for (j=1; j<=NR; j++) { printf "%s%s", a[i,j], (j==NR ? "\n" :",") } } }' {{ item }}_temp.csv >> all.csv
+      shell: awk -F ',' '{ for (i=1; i<=NF; i++) { a[i,NR]=$i } } END { for (i=1; i<=NF; i++) { for (j=1; j<=NR; j++) { printf "%s%s", a[i,j], (j==NR ? "\n" :",") } } }' {{ item }}_temp.csv >> /oracle/all.csv
       register: output 
       loop: "{{ util }}" 
 
