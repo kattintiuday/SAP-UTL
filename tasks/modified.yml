@@ -1,4 +1,5 @@
-- name: Get the last word of processes named ora_pmon
+---
+- name: "Get SAP UTIL params"
   hosts: localhost
   ignore_errors: true
   tasks:
