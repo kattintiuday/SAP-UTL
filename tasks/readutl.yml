@@ -1,5 +1,5 @@
 ---
    - name: To cancel the Process for Database Backup
-    shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $2 }' | grep -v '#'  >> {{ item }}_temp.csv
-    register: output  
-    loop: "{{ util }}"  
+     shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $2 }' | grep -v '#'  >> {{ item }}_temp.csv
+     register: output  
+     loop: "{{ util }}"  
