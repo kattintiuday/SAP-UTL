@@ -1,7 +1,4 @@
----
-- name: "Get SAP UTIL params"
-  hosts: localhost
-  ignore_errors: true
+- name: " Get the SAP UTIL PARAMS ""
   tasks:
 
     - name: " To remove old file"
