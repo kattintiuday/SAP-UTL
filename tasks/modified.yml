@@ -1,6 +1,4 @@
-- name: " Get the SAP UTIL PARAMS ""
-  tasks:
-
+---    
     - name: " To remove old file"
       shell: rm -rf /oracle/all.csv
 
