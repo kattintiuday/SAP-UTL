@@ -1,0 +1,39 @@
+- name: Get the last word of processes named ora_pmon
+  hosts: localhost
+  ignore_errors: true
+  tasks:
+    - name: Get the last word of processes named ora_pmon
+      shell: ps -ef | grep ora_pmon | awk '{ print $8 }' | grep -v grep | awk -F "_" '{print $NF}' | grep -v /bin/sh
+      register: last_word
+    
+    - set_fact: 
+        dbname: "{{last_word.stdout_lines}}"
+
+    - name: Print the last word
+      debug:
+        var: last_word.stdout_lines
+
+    - name: "To get the all util file on server"
+      find:
+        paths: /oracle/{{ item }}/tsm/
+        patterns: "*.utl"
+        recurse: no
+      register: utlfiles
+      loop: "{{ dbname }}"       
+      
+    - set_fact:
+        util: "{{ util|default([]) + item.files|map(attribute='path')|list }}"
+      loop: "{{ utlfiles.results }}"
+    - debug:
+        msg: "{{ item.files | map(attribute='path') | list }}"
+      loop: "{{ utlfiles.results }}"
+    - debug: 
+        var: util
+    - name: "To test"
+      shell: cat {{ item }}
+      loop: "{{ util }}"
+
+    - name: "To cancel the Process for Database Backup"
+      shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $1,$2 }' | grep -v '#' | awk '{ print $2 }'  >> {{ item }}_temp.csv
+      register: output  
+      loop: "{{ util }}"      
