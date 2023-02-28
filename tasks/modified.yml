@@ -11,7 +11,7 @@
     - set_fact: 
         dbname: "{{last_word.stdout_lines}}"
 
-    - name: Print the last word
+    - name: Print the DB Names
       debug:
         var: last_word.stdout_lines
 
@@ -26,14 +26,13 @@
     - set_fact:
         util: "{{ util|default([]) + item.files|map(attribute='path')|list }}"
       loop: "{{ utlfiles.results }}"
+
     - debug:
         msg: "{{ item.files | map(attribute='path') | list }}"
       loop: "{{ utlfiles.results }}"
+      
     - debug: 
         var: util
-    - name: "To test"
-      shell: cat {{ item }}
-      loop: "{{ util }}"
 
     - name: "To filter and append the data to tempfile"
       shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $1,$2 }' | grep -v '#' | awk '{ print $2 }'  >> {{ item }}_temp.csv
