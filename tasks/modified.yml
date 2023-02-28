@@ -9,7 +9,7 @@
     #  register: last_word
 
     - name: Get the last word of processes named ora_pmon
-      command: "ps -ef | grep ora_pmon | awk '{ print $8 }' | grep -v grep | awk -F ' \ ' '{print $NF}' | grep -v /bin/sh"
+      command: " ps -ef | grep ora_pmon | awk '{ print $8 }' | grep -v grep | awk -F '_' '{print $NF}' | grep -v /bin/sh "
       register: last_word
         
     - set_fact: 
