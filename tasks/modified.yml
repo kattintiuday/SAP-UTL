@@ -47,4 +47,4 @@
 
     - name: " To remove the temp files"
       shell: rm -rf {{ item }}_temp.csv
-      loop: "{{ util }}"
+      loop: "{{ util }}" 
