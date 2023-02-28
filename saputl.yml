@@ -1,5 +1,5 @@
 ---
     - name: "Playing with Ansible and Git"
-      hosts: 10.0.3.128,10.0.3.211
+      hosts: appserver01,appserver02
       tasks:
         - include: tasks/modified.yml
