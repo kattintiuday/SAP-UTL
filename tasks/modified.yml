@@ -4,11 +4,10 @@
         path: /oracle/all.csv
         state: absent    
 
-    #- name: Get the last word of processes named ora_pmon
-    #  shell: ps -ef | grep ora_pmon | awk '{ print $8 }' | grep -v grep | awk -F "_" '{print $NF}' | grep -v /bin/sh
-    #  register: last_word
-    - include: tasks/ora_pmon.yml
-
+    - name: Get the last word of processes named ora_pmon
+      shell: ps -ef | grep ora_pmon | awk '{ print $8 }' | grep -v grep | awk -F "_" '{print $NF}' | grep -v /bin/sh
+      register: last_word
+    
     - set_fact: 
         dbname: "{{last_word.stdout_lines}}"
 
