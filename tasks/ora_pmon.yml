@@ -1,16 +1,17 @@
-- name: Get the last word of processes named ora_pmon
-  ps:
-    name: ora_pmon
-    format: cmd
-  register: ps_output
+---
+  - name: Get the last word of processes named ora_pmon
+    ps:
+      name: ora_pmon
+      format: cmd
+    register: ps_output
 
-- name: Extract the last word from the process command
-  regex_search:
-    regex: '_([^_]+)$'
-    string: "{{ ps_output.stdout_lines | select('match', item) | first }}"
-  loop:
-    - "^/bin/sh"
-  register: last_word
+  - name: Extract the last word from the process command
+    regex_search:
+      regex: '_([^_]+)$'
+      string: "{{ ps_output.stdout_lines | select('match', item) | first }}"
+    loop:
+      - "^/bin/sh"
+    register: last_word
 
-- debug:
-    var: last_word.match.group(1)
+  - debug:
+      var: last_word.match.group(1)
