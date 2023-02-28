@@ -1,6 +1,6 @@
 ---
   - name: Get the last word of processes named ora_pmon
-    ps:
+    ansible.builtin.ps:
       name: ora_pmon
       format: cmd
     register: ps_output
