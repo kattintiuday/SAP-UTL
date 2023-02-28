@@ -1,6 +1,8 @@
 ---    
-    - name: " To remove old file"
-      shell: rm -rf /oracle/all.csv
+    - name: " Remove Temp file beining of Play"
+      file:
+        path: /oracle/all.csv
+        state: absent    
 
     - name: Get the last word of processes named ora_pmon
       shell: ps -ef | grep ora_pmon | awk '{ print $8 }' | grep -v grep | awk -F "_" '{print $NF}' | grep -v /bin/sh
