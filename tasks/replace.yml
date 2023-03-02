@@ -1,17 +1,17 @@
 ---
-- name: "To filter and append the data to tempfile"
-  vars:
-    patterns:
-      - ADSMNODE
-      - MAX_VERSIONS
-      - MAX_SESSIONS
-      - BRBACKUPMGTCLASS
-      - BRARCHIVEMGTCLASS
-  tasks:
-    - name: Filter and append data to tempfile
-      lineinfile:
-        path: "{{ item }}_temp.csv"
-        line: "{{ line }}"
-      loop: "{{ util }}"
+    - name: "To filter and append the data to tempfile"
       vars:
-        line: "{{ lookup('file', item) | regex_findall_lines('^\\s*(' + patterns|join('|') + ')\\s+(\\S+)\\s*$') | map('regex_replace', '^.+\\s+(\\S+)$', '\\1') | join(' ') }}"
+        patterns:
+          - ADSMNODE
+          - MAX_VERSIONS
+          - MAX_SESSIONS
+          - BRBACKUPMGTCLASS
+          - BRARCHIVEMGTCLASS
+      tasks:
+        - name: Filter and append data to tempfile
+          lineinfile:
+            path: "{{ item }}_temp.csv"
+            line: "{{ line }}"
+          loop: "{{ util }}"
+          vars:
+            line: "{{ lookup('file', item) | regex_findall_lines('^\\s*(' + patterns|join('|') + ')\\s+(\\S+)\\s*$') | map('regex_replace', '^.+\\s+(\\S+)$', '\\1') | join(' ') }}"
