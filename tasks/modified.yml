@@ -34,10 +34,12 @@
     - debug: 
         var: util
 
-    - name: "To filter and append the data to tempfile"
-      shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $1,$2 }' | grep -v '#' | awk '{ print $2 }'  >> {{ item }}_temp.csv
-      register: output  
-      loop: "{{ util }}"      
+    #- name: "To filter and append the data to tempfile"
+    #  shell: cat {{ item }} | grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' | awk '{ print $1,$2 }' | grep -v '#' | awk '{ print $2 }'  >> {{ item }}_temp.csv
+    #  register: output  
+    #  loop: "{{ util }}"      
+
+    - include_task: tasks/replace.yml
 
     - name: "To append the filtered data to final file with DB names"
       shell: awk -F ',' '{ for (i=1; i<=NF; i++) { a[i,NR]=$i } } END { for (i=1; i<=NF; i++) { for (j=1; j<=NR; j++) { printf "%s%s", a[i,j], (j==NR ? "\n" :",") } } }' {{ item }}_temp.csv >> /oracle/all.csv
