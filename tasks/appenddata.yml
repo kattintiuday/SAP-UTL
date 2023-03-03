@@ -7,4 +7,4 @@
     regex: '^(ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS).*'
     pattern: '^\s*\w+\s+'
     replace: ''
-  loop: "{{ util.stdout_lines }}"
+  loop: "{{ util }}"
