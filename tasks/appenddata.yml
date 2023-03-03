@@ -1,0 +1,10 @@
+- name: "To filter and append the data to tempfile"
+  lineinfile:
+    path: "{{ item }}_temp.csv"
+    create: yes
+    line: "{{ item.stdout_lines | select('match', regex) | map('regex_replace', pattern, replace) | join(',') }}"
+  vars:
+    regex: '^(ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS).*'
+    pattern: '^\s*\w+\s+'
+    replace: ''
+  loop: "{{ util.stdout_lines }}"
