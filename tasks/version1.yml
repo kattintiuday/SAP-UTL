@@ -9,6 +9,7 @@
     replace: ''
   loop: "{{ util.stdout_lines }}"
 
+
 - name: "Create final CSV template"
   template:
     src: final_csv.j2
