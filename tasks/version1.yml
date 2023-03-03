@@ -1,0 +1,29 @@
+- name: "To filter and append the data to tempfile"
+  lineinfile:
+    path: "{{ item }}_temp.csv"
+    create: yes
+    line: "{{ item.stdout_lines | select('match', regex) | map('regex_replace', pattern, replace) | join(',') }}"
+  vars:
+    regex: '^(ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS).*'
+    pattern: '^\s*\w+\s+'
+    replace: ''
+  loop: "{{ util.stdout_lines }}"
+
+- name: "Create final CSV template"
+  template:
+    src: final_csv.j2
+    dest: /oracle/all.csv
+
+- name: "To append the filtered data to final file with DB names"
+  template:
+    src: temp_csv.j2
+    dest: "{{ item }}_temp.csv"
+  loop: "{{ util.stdout_lines }}"
+  
+- name: "Append the data to the final CSV file"
+  lineinfile:
+    path: /oracle/all.csv
+    insertafter: EOF
+    line: "{{ item.stdout_lines }}"
+  loop: "{{ util.stdout_lines }}"
+  register: output1
