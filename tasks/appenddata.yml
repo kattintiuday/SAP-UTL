@@ -8,3 +8,46 @@
     pattern: '^\s*\w+\s+'
     replace: ''
   loop: "{{ util }}"
+
+
+
+
+- name: Filter data from stdout_lines using select filter
+  debug:
+    msg: "{{ output.stdout_lines | select('search', 'filter_criteria') | list }}"
+
+
+- name: Filter data from stdout_lines using regex_search filter
+  debug:
+    msg: "{{ output.stdout_lines | regex_search('regex_pattern') }}"
+
+
+---
+- name: "Playing with Ansible and Git"
+  hosts: localhost
+  tasks:
+    - name: Fetch specific words
+      command: grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' test.utl 
+      register: words_output
+        
+    - debug:
+        msg: "{{ words_output }}"    
+
+    - debug:
+        msg: "{{ words_output.stdout_lines | select('search', 'BRBACKUPMGTCLASS') }}"
+
+
+
+---
+- name: "Playing with Ansible and Git"
+  hosts: localhost
+  tasks:
+    - name: Fetch specific words
+      command: grep -E 'ADSMNODE|MAX_VERSIONS|MAX_SESSIONS|BRBACKUPMGTCLASS|BRARCHIVEMGTCLASS' test.utl
+      register: words_output
+
+    - debug:
+        msg: "{{ words_output }}"
+
+    - debug:
+        msg: "{{ words_output.stdout_lines | select('search', 'BRBACKUPMGTCLASS|ADSMNODE|MAX_VERSIONS|MAX_SESSIONS')| match('^'BRBACKUPMGTCLASS|ADSMNODE|MAX_VERSIONS|MAX_SESSIONS'.*$') | map('replace', '#', '') | list }}"
